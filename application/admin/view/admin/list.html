@@ -1,0 +1,121 @@
+{extend name="Public:base" /}
+{block name="main"}
+<div class="layui-btn-group demoTable">
+    <button class="layui-btn" data-type="getCheckData">批量删除</button>
+   {/* <button class="layui-btn" data-type="getCheckLength">获取选中数目</button>
+    <button class="layui-btn" data-type="isAll">验证是否全选</button>*/}
+</div>
+
+<table class="layui-table" lay-data="{height:500, url:'{:url('list_')}', page:true, id:'idTest'}" lay-filter="demo">
+    <thead>
+    <tr>
+        <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
+        <th lay-data="{field:'id', width:60, sort: true, fixed: true}">ID</th>
+        <th lay-data="{field:'name', width:180}">用户名</th>
+        <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}"></th>
+    </tr>
+    </thead>
+</table>
+<script src="/static/layui/lay/modules/jquery.js"></script>
+<script type="text/html" id="barDemo">
+    {/*<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>*/}
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function(obj){
+            console.log(obj)
+        });
+        //监听工具条
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'detail'){
+                layer.msg('ID：'+ data.id + ' 的查看操作');
+            } else if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+
+                    $.ajax({
+                        url: "{:url('delete_')}",
+                        type: 'post',
+                        data: data,
+                        dataType: 'text',
+                        async: false,
+                        success: function (data) {
+                            if (data ==2){
+                                layer.msg('删除成功');
+                                obj.del();
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            } else if(obj.event === 'edit'){
+                //layer.alert('编辑行：<br>'+ JSON.stringify(data['id']))
+                //alert(JSON.stringify(data));
+                //默认prompt
+                var id = JSON.stringify(data['id']);
+                layer.prompt({title: '输入修改密码', formType: 1},function(password,index){
+                    $.ajax({
+                        url: "{:url('other_edit_')}",
+                        type: 'post',
+                        data: {id:id,password:password},
+                        dataType: 'text',
+                        async: false,
+                        success: function (data) {
+                            if (data ==1){
+                                layer.msg('更改成功');
+                            }
+                        }
+                    });
+                    //return false;
+                    ///layer.msg('得到了'+dd);
+                    layer.close(index);
+                });
+            }
+        });
+
+        var $ = layui.$, active = {
+            getCheckData: function(){ //获取选中数据
+                var checkStatus = table.checkStatus('idTest')
+                    ,data = checkStatus.data;
+                //layer.alert(JSON.stringify(data));
+                layer.confirm('真的删除行么', function(index){
+                    $.ajax({
+                        url: "{:url('delete_all_')}",
+                        type: 'post',
+                        data: {data:data},
+                        dataType: 'text',
+                        async: false,
+                        success: function (data) {
+                            if (data ==3){
+                                layer.msg('删除成功,请手动刷新');
+                                //checkStatus.del();
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+            ,getCheckLength: function(){ //获取选中数目
+                var checkStatus = table.checkStatus('idTest')
+                    ,data = checkStatus.data;
+                layer.msg('选中了：'+ data.length + ' 个');
+            }
+            ,isAll: function(){ //验证是否全选
+                var checkStatus = table.checkStatus('idTest');
+                layer.msg(checkStatus.isAll ? '全选': '未全选')
+            }
+        };
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+{/block}

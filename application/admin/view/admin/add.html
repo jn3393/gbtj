@@ -1,0 +1,55 @@
+{extend name="Public:base" /}
+{block name="main"}
+<form class="layui-form" action="{:url('add_')}" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="name" required lay-verify="required" placeholder="请输入用户名" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-inline">
+            <input type="text" name="password" required lay-verify="required" placeholder="请输入密码" value=""
+                   autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-mid layui-word-aux">请保存好密码</div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
+        </div>
+    </div>
+</form>
+<script>
+    //Demo
+
+    layui.use('form', function () {
+        var form = layui.form;
+        //监听提交
+       /* form.on('submit(formDemo)', function (data) {
+            //layer.msg(JSON.stringify(data.field));
+            //console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+
+            $.ajax({
+                url: "{:url('add_')}",
+                type: 'post',
+                data: data.field,
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    if (data == 3) {
+                        layer.msg('用户名已存在');
+                    } else if (data == 1) {
+                        layer.msg('成功');
+                    } else if (data == 2) {
+                        layer.msg('不能为空');
+                    }
+                }
+            });
+            //return false;
+        });*/
+    });
+</script>
+{/block}

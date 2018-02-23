@@ -1,0 +1,43 @@
+{extend name="Public:base" /}
+{block name="main"}
+<form class="layui-form" action="{:url('/admin/category/edit_','id='.$db1['id'])}" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">父级栏目</label>
+        <div class="layui-input-inline">
+            <select name="pid" lay-verify="required">
+                <option value="0"  >顶级分类</option>
+                {foreach $db as $vo}
+                <option value="{$vo.id}" {if  $vo.id == $db1.pid} selected {/if} >{$vo.name}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="name" required lay-verify="required" value="{$db1['name']}" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">栏目类型</label>
+        <div class="layui-input-block">
+            <input type="radio" name="type" value="1" title="列表" {if  1 == $db1.type} checked {/if}>
+            <input type="radio" name="type" value="2" title="单页" {if  2 == $db1.type} checked {/if}>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
+        </div>
+    </div>
+</form>
+<script>
+    //Demo
+
+    layui.use('form', function () {
+        var form = layui.form;
+
+    });
+</script>
+{/block}

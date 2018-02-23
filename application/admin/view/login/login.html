@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>后台登录</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <script src="/static/layui/layui.js" charset="utf-8"></script>
+    <style>
+        #main {
+            position: absolute;
+            width: 350px;
+            height: 200px;
+            left: 50%;
+            top: 20%;
+            margin-left: -200px;
+            margin-top: -100px;
+        }
+    </style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin" id="main">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+        <legend>后台登录</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane" action="{:url('login_')}" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" lay-verify="required" placeholder="请输入用户名" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,layer = layui.layer;
+
+
+        //监听提交
+     /*        form.on('submit(demo1)', function (data) {
+            /!*layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            })*!/
+            $.ajax({
+                url: "{:url('login_')}",
+                type: 'post',
+                data: data.field,
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    if (data == 1) {
+
+                    } else if (data == 2) {
+                        layui.use('layer', function () {
+                            var layer = layui.layer;
+
+                            layer.msg('登录成功');
+                        });
+                        location.href = "{:url('/admin/index/index')}";
+                    } else if (data == 3) {
+                        layui.use('layer', function () {
+                            var layer = layui.layer;
+
+                            layer.msg('不匹配');
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+*/
+
+    });
+</script>
+</body>
+</html>
